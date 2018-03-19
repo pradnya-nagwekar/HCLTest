@@ -11,13 +11,15 @@ require('./site/style.css')
 
 
 CurrencyPairModel = require('./es6/model/CurrencyPairsModel');
-DataGrid = require('./es6/view/DataGrid.js');
+DataGrid = require('./es6/view/DataGrid');
+MidPriceData = require('./es6/model/MidPriceData');
 
 
 
 // Change this to get detailed logging from the stomp library
 global.DEBUG = false
 currencyPairsModel = new CurrencyPairModel();
+currencyPairsModel.updateMidPriceArray();
 dataGrid = new DataGrid();
 
 
@@ -46,8 +48,8 @@ function connectCallback() {
 
 		currencyPairsModel.sortData();
 			dataGrid.clearTable();
-		dataGrid.renderTable(currencyPairsModel.allCurrencyPairsData);
-	console.log(currencyPairsModel.allCurrencyPairsData);
+		dataGrid.renderTable(currencyPairsModel);
+	//console.log(currencyPairsModel.allCurrencyPairsData);
 
 });
 }

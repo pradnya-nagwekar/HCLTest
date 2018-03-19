@@ -1,4 +1,5 @@
-module.exports = class CurrencyPair {
+var MidPriceData = require('./MidPriceData');
+class CurrencyPair {
   constructor(name,bestBid,bestAsk,openBid,openAsk,lastChangeAsk,lastChangeBid) {
     this.name = name;
     this.bestBid = bestBid;
@@ -7,6 +8,11 @@ module.exports = class CurrencyPair {
     this.openAsk = openAsk;
     this.lastChangeAsk=lastChangeAsk;
     this.lastChangeBid= lastChangeBid;
+    this.midPriceData = new MidPriceData();
   }
 
 }
+
+
+
+module.exports = CurrencyPair;
