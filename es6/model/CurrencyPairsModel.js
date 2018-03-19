@@ -1,9 +1,10 @@
-var CurrencyPair = require('./CurrencyPair');
+let CurrencyPair = require('./CurrencyPair');
+let Event = require('../Event');
 module.exports = class CurrencyPairsModel{
     constructor(){
         this.allCurrencyPairsData = [];
-
-
+        //event for mode updates
+        this.modelUpdated = new Event(this);
     }
 
     isNewCurrencyPair(name){
@@ -13,6 +14,7 @@ module.exports = class CurrencyPairsModel{
         else {
             return false;
         }
+
     }
     addNewCurrencyPairsRecord(currencyPair){
         //using destructuring to call CurrencyPair construct
@@ -21,7 +23,8 @@ module.exports = class CurrencyPairsModel{
 
         //sort data after update
         this.sortData();
-
+        //notify all observers for model updated
+        this.modelUpdated.notify();
     }
 
     updateCurrencyPairsRecord(currencyPair){
@@ -42,7 +45,7 @@ module.exports = class CurrencyPairsModel{
 
         //sort data after update
         this.sortData();
-
+        this.modelUpdated.notify();
 
     }
 

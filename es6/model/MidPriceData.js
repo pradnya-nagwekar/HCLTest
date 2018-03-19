@@ -14,6 +14,6 @@ module.exports = class MidPriceData{
          }else if(this.midPriceArray.length<30){
             this.midPriceArray.push(midPrice);
          }
-         //console.log(this.midPriceArray);
+         console.log(this.midPriceArray);
     }
 }

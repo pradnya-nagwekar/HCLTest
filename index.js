@@ -19,14 +19,13 @@ MidPriceData = require('./es6/model/MidPriceData');
 // Change this to get detailed logging from the stomp library
 global.DEBUG = false
 currencyPairsModel = new CurrencyPairModel();
-currencyPairsModel.updateMidPriceArray();
-dataGrid = new DataGrid();
-
-
-
+dataGrid = new DataGrid(currencyPairsModel);
 
 const url = "ws://localhost:8011/stomp"
 const client = Stomp.client(url);
+
+//update midprice every second
+currencyPairsModel.updateMidPriceArray();
 client.debug = function(msg) {
   if (global.DEBUG) {
     console.info(msg)
@@ -47,10 +46,6 @@ function connectCallback() {
       //update exisitng currency pair
 			currencyPairsModel.updateCurrencyPairsRecord(message);
 		}
-
-		dataGrid.clearTable();
-		dataGrid.renderTable(currencyPairsModel);
-
 
 });
 }
