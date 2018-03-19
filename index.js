@@ -38,18 +38,19 @@ function connectCallback() {
  client.subscribe("/fx/prices",function(data){
 		var message = JSON.parse(data.body);
 
-
+    //check if message is for a new currency pair or already existing currency pair
 		if(currencyPairsModel.isNewCurrencyPair(message.name)){
-			currencyPairsModel.addNewCurrencyPairsData(message);
+      //add new currency pair
+			currencyPairsModel.addNewCurrencyPairsRecord(message);
 		}
 		else {
-			currencyPairsModel.updateCurrencyPairsData(message);
+      //update exisitng currency pair
+			currencyPairsModel.updateCurrencyPairsRecord(message);
 		}
 
-		currencyPairsModel.sortData();
-			dataGrid.clearTable();
+		dataGrid.clearTable();
 		dataGrid.renderTable(currencyPairsModel);
-	//console.log(currencyPairsModel.allCurrencyPairsData);
+
 
 });
 }
