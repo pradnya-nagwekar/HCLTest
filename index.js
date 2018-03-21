@@ -35,7 +35,8 @@ client.debug = function(msg) {
 function connectCallback() {
 
  client.subscribe("/fx/prices",function(data){
-		var message = JSON.parse(data.body);
+
+		const message = JSON.parse(data.body);
 
     //check if message is for a new currency pair or already existing currency pair
 		if(currencyPairsModel.isNewCurrencyPair(message.name)){

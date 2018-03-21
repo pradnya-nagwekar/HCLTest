@@ -1,15 +1,20 @@
 module.exports = class Event{
-  constructor(sender){
-    this._sender = sender;
-    this._listeners = [];
-  }
- attach(listener){
-   this._listeners.push(listener);
- }
- notify(args){
-   for(let i=0;i<this._listeners.length;i++){
-     this._listeners[i](this._sender,args)
-   }
- }
-
+    constructor(sender){
+        this._sender = sender;
+        this._listeners = [];
+    }
+    /**
+    attach listerner
+    */
+    attach(listener){
+        this._listeners.push(listener);
+    }
+    /**
+    notify all listners listening to Event
+    */
+    notify(args){
+        this._listeners.forEach((item)=>{
+        item(this._sender,args)
+        })
+    }
 }

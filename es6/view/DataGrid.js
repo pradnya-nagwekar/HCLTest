@@ -3,41 +3,51 @@ var SparkLine = require('../../site/sparkline');
 
 module.exports = class DataGrid{
   constructor(model){
-    this._model = model
+    this._model = model;
     //attach event listener for model updates
     this._model.modelUpdated.attach(()=>{
       this.clearTable();//clear existing grid
-      this.renderTable();
+      this.renderTable();//render grid with updated data
     })
   }
-
+    /**
+    clearTable - clears full table data
+    */
     clearTable(){
-    var table = document.getElementById("currencyPairData");
-    var totalRows = table.rows.length;
-    for (var i = totalRows; i > 1; i--) { //header should not be deleted
+    let table = document.getElementById("currencyPairData");
+    let totalRows = table.rows.length;
+    for (let i = totalRows; i > 1; i--) { //header should not be deleted
             table.deleteRow(i-1);
         }
+
     }
+    /**
+    renderTable - renders table with current modelUpdated
+    */
     renderTable(){
         let allCurrencyPairsData = this._model.allCurrencyPairsData;
-
         let table = document.getElementById("currencyPairData");
-        let totalRows = allCurrencyPairsData.length;
-        for(let i=0;i<totalRows;i++){
-            let newRow = table.insertRow(i+1);//header should not be recreated
-            let columnData = Object.values(allCurrencyPairsData[i]); //get all values
-            let totalColumns =columnData.length
-            for(var j=0;j<totalColumns-1;j++){
-                var newColumn = newRow.insertCell(j); //create columns with data
-                newColumn.innerText = columnData[j]
 
-            }
-            //add midprice data with sparkline in last columnData
-            var sparkColumn = newRow.insertCell(j);
-            const sparkElement = document.createElement('span');
-            const sparkLine = new SparkLine(sparkElement);
-            sparkLine.draw(columnData[j].midPriceArray);
-            sparkColumn.appendChild(sparkElement);
-        }
+        allCurrencyPairsData.forEach((item,index)=>{
+            //header should not be recreated.
+            let newRow = table.insertRow(index+1);
+            //get all values for columns
+            let columnData = Object.values(item);
+            columnData.forEach((item,index)=>{
+                if(index < columnData.length-1){
+                  //create columns with data
+                  let newColumn = newRow.insertCell(index);
+                  newColumn.innerText = item;
+                }
+                else if(index == columnData.length-1){
+                  //add midprice data with sparkline in last columnData
+                    let sparkColumn = newRow.insertCell(index);
+                    const sparkElement = document.createElement('span');
+                    const sparkLine = new SparkLine(sparkElement);
+                    sparkLine.draw(columnData[index].midPriceArray);
+                    sparkColumn.appendChild(sparkElement);
+                 }
+            })
+        })
     }
 }
