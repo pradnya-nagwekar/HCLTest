@@ -1,5 +1,5 @@
-const CurrencyPair = require('./CurrencyPair');
-const Event = require('../Event');
+const CurrencyPair = require("./CurrencyPair");
+const Event = require("../Event");
 
 module.exports = class CurrencyPairsModel{
     constructor(){
@@ -7,7 +7,6 @@ module.exports = class CurrencyPairsModel{
         //event for mode updates
         this.modelUpdated = new Event(this);
     }
-
     /**
     isNewCurrencyPair-checks if given currency pair is new or existing currency CurrencyPair
     @param {string} name- the currency pair name to be checked
@@ -15,23 +14,22 @@ module.exports = class CurrencyPairsModel{
     isNewCurrencyPair(name){
         return this.allCurrencyPairsData.find((item)=>item.name == name)?false:true;
     }
-
     /**
     addNewCurrencyPairsRecord -add new currency pair record model
-    @param{Object}currencyPair - stomp message object recieved.
+    @param {Object} currencyPair - stomp message object recieved.
     */
     addNewCurrencyPairsRecord(currencyPair){
         //using destructuring to call CurrencyPair construct
         let newCurrencyPair = new CurrencyPair(currencyPair);
         this.allCurrencyPairsData.push(newCurrencyPair);
         //sort data after update
-        this._sortData();
+        this.sortData();
         //notify all observers for model updated
         this.modelUpdated.notify();
     }
     /**
     updateCurrencyPairsRecord - updates existing currency pair object in model
-    @param{Object}-currencyPair:Object - stomp message object recieved.
+    @param {Object} currencyPair:stomp message object recieved.
     */
     updateCurrencyPairsRecord(currencyPair){
         //get item to be updated
@@ -39,21 +37,23 @@ module.exports = class CurrencyPairsModel{
         //get index to be updated
         let currencyPairIndexToBeUpdated = this.allCurrencyPairsData.findIndex(item =>item.name == currencyPair.name);
         //update data except the midPriceArray
-        currencyPairTobeUpdated.bestBid = currencyPair.bestBid;
-        currencyPairTobeUpdated.bestAsk = currencyPair.bestAsk;
-        currencyPairTobeUpdated.lastChangeAsk = currencyPair.lastChangeAsk;
-        currencyPairTobeUpdated.lastChangeBid = currencyPair.lastChangeBid;
-        //update currencyPair in model
-        this.allCurrencyPairsData.splice(currencyPairIndexToBeUpdated,1,currencyPairTobeUpdated);
-        //sort data after update
-        this._sortData();
-        this.modelUpdated.notify();
+        if(currencyPairTobeUpdated != undefined){
+            currencyPairTobeUpdated.bestBid = currencyPair.bestBid;
+            currencyPairTobeUpdated.bestAsk = currencyPair.bestAsk;
+            currencyPairTobeUpdated.lastChangeAsk = currencyPair.lastChangeAsk;
+            currencyPairTobeUpdated.lastChangeBid = currencyPair.lastChangeBid;
+            //update currencyPair in model
+            this.allCurrencyPairsData.splice(currencyPairIndexToBeUpdated,1,currencyPairTobeUpdated);
+            //sort data after update
+            this.sortData();
+            //notify obsevers about the update
+            this.modelUpdated.notify();
+        }
     }
-
     /**
-    _sortData()-sorts model data in ascending order of lastChangeBid
+    sortData()-sorts model data in ascending order of lastChangeBid
     */
-    _sortData(){
+    sortData(){
         this.allCurrencyPairsData.sort((a,b)=>a.lastChangeBid - b.lastChangeBid)
     }
 

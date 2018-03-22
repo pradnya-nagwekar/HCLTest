@@ -1,6 +1,5 @@
-var CurrencyPairsModel = require('../model/CurrencyPairsModel');
-var SparkLine = require('../../site/sparkline');
-
+var CurrencyPairsModel = require("../model/CurrencyPairsModel");
+var SparkLine = require("../../site/sparkline");
 module.exports = class DataGrid{
   constructor(model){
     this._model = model;
@@ -42,12 +41,12 @@ module.exports = class DataGrid{
                 else if(index == columnData.length-1){
                   //add midprice data with sparkline in last columnData
                     let sparkColumn = newRow.insertCell(index);
-                    const sparkElement = document.createElement('span');
+                    const sparkElement = document.createElement("span");
                     const sparkLine = new SparkLine(sparkElement);
                     sparkLine.draw(columnData[index].midPriceArray);
                     sparkColumn.appendChild(sparkElement);
                  }
-            })
-        })
+            });
+        });
     }
 }

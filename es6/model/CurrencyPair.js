@@ -1,4 +1,4 @@
-const MidPriceData = require('./MidPriceData');
+const MidPriceData = require("./MidPriceData");
 module.exports = class CurrencyPair {
   constructor({name,bestBid,bestAsk,lastChangeAsk,lastChangeBid}) {
     this.name = name;

@@ -18,3 +18,13 @@ fx updates.
 
 Once you've started the development server, navigate to http://localhost:8011
 to read the task description and get started.
+
+For unit testing.
+
+Open command prompt, Navigate to main project folder, run the command
+
+```
+npm run tests
+```
+unit tests will start executing.
+All tests are written in test/unit/testFile.js
